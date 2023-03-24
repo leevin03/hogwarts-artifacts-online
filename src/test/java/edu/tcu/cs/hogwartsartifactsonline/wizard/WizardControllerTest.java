@@ -3,6 +3,7 @@ package edu.tcu.cs.hogwartsartifactsonline.wizard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.Artifact;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
+import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.dto.WizardDto;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -124,7 +125,7 @@ public class WizardControllerTest {
     @Test
     void testFindWizardByIdNotFound() throws Exception {
         //Given
-        given(this.wizardService.findById(9)).willThrow(new WizardNotFoundException(9));
+        given(this.wizardService.findById(9)).willThrow(new ObjectNotFoundException("wizard", 9));
         //When and Then
         this.mockMvc.perform(get("/api/v1/wizards/9").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
@@ -197,7 +198,7 @@ public class WizardControllerTest {
     @Test
     void testUpdateWizardErrorWithNonExistentId() throws Exception {
         // Given
-        given(this.wizardService.update(eq(9), Mockito.any(Wizard.class))).willThrow(new WizardNotFoundException(9));
+        given(this.wizardService.update(eq(9), Mockito.any(Wizard.class))).willThrow(new ObjectNotFoundException("wizard", 9));
 
         WizardDto wizardDto = new WizardDto(9, "Harry Potter-update", 0);
 
@@ -227,7 +228,7 @@ public class WizardControllerTest {
     @Test
     void testDeleteWizardErrorWithNonExistentId() throws Exception {
         // Given
-        doThrow(new WizardNotFoundException(9)).when(this.wizardService).delete(9);
+        doThrow(new ObjectNotFoundException("wizard", 9)).when(this.wizardService).delete(9);
 
         // When and then
         this.mockMvc.perform(delete("/api/v1/wizards/9").accept(MediaType.APPLICATION_JSON))
