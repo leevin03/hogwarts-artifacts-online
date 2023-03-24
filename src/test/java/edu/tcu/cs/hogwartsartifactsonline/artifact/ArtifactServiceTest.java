@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -153,7 +152,7 @@ class ArtifactServiceTest {
         oldArtifact.setImageUrl("ImageUrl");
 
         Artifact update = new Artifact();
-        update.setId("1250808601744904192");
+//        update.setId("1250808601744904192");
         update.setName("Invisibility Cloak");
         update.setDescription("A new description.");
         update.setImageUrl("ImageUrl");
@@ -165,7 +164,7 @@ class ArtifactServiceTest {
         Artifact updatedArtifact = artifactService.update("1250808601744904192", update);
 
         // Then
-        assertThat(updatedArtifact.getId()).isEqualTo(update.getId());
+        assertThat(updatedArtifact.getId()).isEqualTo("1250808601744904192");
         assertThat(updatedArtifact.getDescription()).isEqualTo(update.getDescription());
         verify(artifactRepository, times(1)).findById("1250808601744904192");
         verify(artifactRepository, times(1)).save(oldArtifact);
@@ -175,9 +174,9 @@ class ArtifactServiceTest {
     void testUpdateNotFound() {
         // Given
         Artifact update = new Artifact();
-        update.setName("Invisibility Cloak");
-        update.setDescription("A new description.");
-        update.setImageUrl("ImageUrl");
+//        update.setName("Invisibility Cloak");
+//        update.setDescription("A new description.");
+//        update.setImageUrl("ImageUrl");
 
         given(artifactRepository.findById("1250808601744904192")).willReturn(Optional.empty());
 
