@@ -51,6 +51,4 @@ public class ArtifactService {
         this.artifactRepository.deleteById(artifactId);
     }
 
-
-
 }
