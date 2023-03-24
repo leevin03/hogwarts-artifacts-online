@@ -3,6 +3,7 @@ package edu.tcu.cs.hogwartsartifactsonline.system.exception;
 import edu.tcu.cs.hogwartsartifactsonline.artifact.ArtifactNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.system.Result;
 import edu.tcu.cs.hogwartsartifactsonline.system.StatusCode;
+import edu.tcu.cs.hogwartsartifactsonline.wizard.WizardNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -18,9 +19,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(ArtifactNotFoundException.class)
+    @ExceptionHandler({ArtifactNotFoundException.class, WizardNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handleArtifactNotFoundException(ArtifactNotFoundException ex){
+    Result handleArtifactOrWizardNotFoundException(Exception ex){
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
     }
 
@@ -37,5 +38,11 @@ public class ExceptionHandlerAdvice {
         });
         return new Result(false, StatusCode.INVALID_ARGUMENT, "Provided arguments are invalid, see data for details.", map);
     }
+
+//    @ExceptionHandler(WizardNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    Result handleWizardNotFoundException(WizardNotFoundException ex){
+//        return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
+//    }
 
 }
